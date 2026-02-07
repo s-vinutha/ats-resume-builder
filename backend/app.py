@@ -1,7 +1,12 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
 import os
-from flask import send_file
+import sys
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(BASE_DIR)
+
+from flask import Flask, request, jsonify, send_file
+from flask_cors import CORS
+from ats_analyzer.ats_score import calculate_ats_score
 from resume_generator.pdf_generator import generate_resume_pdf
 
 app = Flask(__name__)
@@ -29,7 +34,6 @@ def generate_resume():
 
 @app.route("/ats-score", methods=["POST", "OPTIONS"])
 def ats_score():
-    # Handle preflight request
     if request.method == "OPTIONS":
         return jsonify({"status": "ok"}), 200
 
@@ -38,12 +42,15 @@ def ats_score():
     resume_text = data.get("resume", "")
     job_description = data.get("jobDescription", "")
 
-    score = min(100, max(50, len(resume_text) % 100))
+    score, missing_keywords = calculate_ats_score(
+        resume_text, job_description
+    )
 
     return jsonify({
         "ats_score": score,
-        "missing_keywords": ["REST API", "Pandas", "Machine Learning"]
+        "missing_keywords": missing_keywords
     })
+
 
 
 if __name__ == "__main__":
