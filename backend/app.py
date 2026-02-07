@@ -24,6 +24,8 @@ def generate_resume():
         return jsonify({"status": "ok"}), 200
 
     data = request.json
+    template = data.get("template", "classic")
+
     file_path = "resume.pdf"
 
     generate_resume_pdf(data, file_path)

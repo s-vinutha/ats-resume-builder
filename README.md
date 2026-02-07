@@ -25,3 +25,6 @@ Cosine similarity is calculated and scaled to generate an ATS score.
 cd backend
 venv\Scripts\activate
 python app.py
+
+
+Version 2 – Enhanced with ATS scoring, multiple templates, and upcoming AI features.

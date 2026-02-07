@@ -10,7 +10,8 @@ function ResumeForm() {
     education: "",
     projects: "",
     experience: "",
-    jobDescription: ""
+    jobDescription: "",
+    template: "classic"
   });
 
   const [atsScore, setAtsScore] = useState(null);
@@ -45,6 +46,7 @@ function ResumeForm() {
 
       setAtsScore(atsResponse.ats_score);
       setMissingKeywords(atsResponse.missing_keywords);
+      console.log("Selected template:", formData.template);
 
     } catch (error) {
       console.error("Error during resume generation or ATS scoring", error);
@@ -69,6 +71,14 @@ function ResumeForm() {
         placeholder="Paste Job Description"
         onChange={handleChange}
       />
+      <label>
+  Resume Template
+  <select name="template" onChange={handleChange} value={formData.template}>
+    <option value="classic">Classic ATS</option>
+    <option value="skills">Skills First</option>
+    <option value="experience">Experience First</option>
+  </select>
+</label>
 
       <button type="submit">Submit</button>
 
