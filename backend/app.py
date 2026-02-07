@@ -1,5 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import os
+from flask import send_file
+from resume_generator.pdf_generator import generate_resume_pdf
 
 app = Flask(__name__)
 
@@ -9,17 +12,19 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 @app.route("/", methods=["GET"])
 def home():
     return jsonify({"message": "Backend running"})
+
 @app.route("/generate-resume", methods=["POST", "OPTIONS"])
 def generate_resume():
-    # Handle preflight request
     if request.method == "OPTIONS":
         return jsonify({"status": "ok"}), 200
 
     data = request.json
-    return jsonify({
-        "status": "success",
-        "received_data": data
-    })
+    file_path = "resume.pdf"
+
+    generate_resume_pdf(data, file_path)
+
+    return send_file(file_path, as_attachment=True)
+
 
 
 @app.route("/ats-score", methods=["POST", "OPTIONS"])

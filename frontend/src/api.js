@@ -4,7 +4,8 @@ export async function generateResume(data) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
   });
-  return response.json();
+
+  return response.blob();
 }
 
 export async function getATSScore(data) {

@@ -18,22 +18,21 @@ function ResumeForm() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const resumeResponse = await generateResume(formData);
-      console.log("Resume API:", resumeResponse);
+  try {
+    const pdfBlob = await generateResume(formData);
 
-      const atsResponse = await getATSScore({
-        resume: JSON.stringify(formData),
-        jobDescription: formData.jobDescription
-      });
+    const url = window.URL.createObjectURL(pdfBlob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "ATS_Resume.pdf";
+    a.click();
 
-      console.log("ATS Score:", atsResponse);
-    } catch (error) {
-      console.error("API Error:", error);
-    }
-  };
+  } catch (error) {
+    console.error("Resume generation failed", error);
+  }
+};
 
   return (
     <form onSubmit={handleSubmit}>
