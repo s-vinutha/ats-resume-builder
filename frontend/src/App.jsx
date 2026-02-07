@@ -1,7 +1,11 @@
 import ResumeForm from "./components/ResumeForm";
 
 function App() {
-  return <ResumeForm />;
+  return (
+    <div>
+      <ResumeForm />
+    </div>
+  );
 }
 
 export default App;
