@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { generateResume } from "../api";
 function ResumeForm() {
   const [formData, setFormData] = useState({
     name: "",
@@ -16,10 +16,15 @@ function ResumeForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData); // later we send this to Flask
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const result = await generateResume(formData);
+    console.log("Response from backend:", result);
+  } catch (error) {
+    console.error("Error connecting to backend:", error);
+  }
+};
 
   return (
     <form onSubmit={handleSubmit}>
